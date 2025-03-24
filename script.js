@@ -19,32 +19,26 @@ function navigateTo(pageId) {
 }
 
 function updateNavigationButtons() {
+    // Skip if on the Home page (no prev/next buttons)
+    if (currentPage === 'home') return;
+
     const currentIndex = pageOrder.indexOf(currentPage);
     const prevButton = document.querySelector(`#${currentPage} .prev-button`);
     const nextButton = document.querySelector(`#${currentPage} .next-button`);
 
-    // Previous button
-    if (currentIndex > 0) {
-        const prevPage = pageOrder[currentIndex - 1];
-        prevButton.style.display = 'inline-block';
-        prevButton.textContent = `< ${pageTitles[prevPage]}`;
-        prevButton.onclick = () => navigateTo(prevPage);
-    } else {
-        prevButton.style.display = 'none';
-    }
+    // Previous button (circular navigation)
+    const prevIndex = (currentIndex === 0) ? pageOrder.length - 1 : currentIndex - 1;
+    const prevPage = pageOrder[prevIndex];
+    prevButton.style.display = 'inline-block';
+    prevButton.textContent = `< ${pageTitles[prevPage]}`;
+    prevButton.onclick = () => navigateTo(prevPage);
 
-    // Next button (with looping to Home)
-    if (currentIndex < pageOrder.length - 1) {
-        const nextPage = pageOrder[currentIndex + 1];
-        nextButton.style.display = 'inline-block';
-        nextButton.textContent = `${pageTitles[nextPage]} >`;
-        nextButton.onclick = () => navigateTo(nextPage);
-    } else {
-        const nextPage = pageOrder[0];
-        nextButton.style.display = 'inline-block';
-        nextButton.textContent = `Home >`;
-        nextButton.onclick = () => navigateTo(nextPage);
-    }
+    // Next button (circular navigation)
+    const nextIndex = (currentIndex === pageOrder.length - 1) ? 0 : currentIndex + 1;
+    const nextPage = pageOrder[nextIndex];
+    nextButton.style.display = 'inline-block';
+    nextButton.textContent = `${pageTitles[nextPage]} >`;
+    nextButton.onclick = () => navigateTo(nextPage);
 }
 
 // Swipe Detection
@@ -53,17 +47,16 @@ let touchendX = 0;
 let isSingleTouch = false;
 
 document.addEventListener('touchstart', e => {
-    // Check the number of touches
     if (e.touches.length === 1) {
         isSingleTouch = true;
         touchstartX = e.changedTouches[0].screenX;
     } else {
-        isSingleTouch = false; // Ignore multi-touch gestures (e.g., pinch-to-zoom)
+        isSingleTouch = false;
     }
 });
 
 document.addEventListener('touchend', e => {
-    if (!isSingleTouch) return; // Ignore if it wasn't a single-touch gesture
+    if (!isSingleTouch) return;
 
     touchendX = e.changedTouches[0].screenX;
     handleSwipe();
@@ -74,15 +67,14 @@ function handleSwipe() {
     const currentIndex = pageOrder.indexOf(currentPage);
     
     if (touchendX < touchstartX - swipeThreshold) {
-        // Swipe left: go to next page, loop to Home if on last page
-        if (currentIndex < pageOrder.length - 1) {
-            navigateTo(pageOrder[currentIndex + 1]);
-        } else {
-            navigateTo(pageOrder[0]);
-        }
+        // Swipe left: go to next page (circular)
+        const nextIndex = (currentIndex === pageOrder.length - 1) ? 0 : currentIndex + 1;
+        navigateTo(pageOrder[nextIndex]);
     }
-    if (touchendX > touchstartX + swipeThreshold && currentIndex > 0) {
-        navigateTo(pageOrder[currentIndex - 1]);
+    if (touchendX > touchstartX + swipeThreshold) {
+        // Swipe right: go to previous page (circular)
+        const prevIndex = (currentIndex === 0) ? pageOrder.length - 1 : currentIndex - 1;
+        navigateTo(pageOrder[prevIndex]);
     }
 }
 
@@ -91,16 +83,14 @@ document.addEventListener('keydown', e => {
     const currentIndex = pageOrder.indexOf(currentPage);
     const currentPageElement = document.getElementById(currentPage);
     
-    // Left/Right for page navigation
+    // Left/Right for page navigation (circular)
     if (e.key === 'ArrowRight') {
-        if (currentIndex < pageOrder.length - 1) {
-            navigateTo(pageOrder[currentIndex + 1]);
-        } else {
-            navigateTo(pageOrder[0]);
-        }
+        const nextIndex = (currentIndex === pageOrder.length - 1) ? 0 : currentIndex + 1;
+        navigateTo(pageOrder[nextIndex]);
     }
-    if (e.key === 'ArrowLeft' && currentIndex > 0) {
-        navigateTo(pageOrder[currentIndex - 1]);
+    if (e.key === 'ArrowLeft') {
+        const prevIndex = (currentIndex === 0) ? pageOrder.length - 1 : currentIndex - 1;
+        navigateTo(pageOrder[prevIndex]);
     }
 
     // Up/Down for scrolling
