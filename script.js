@@ -19,21 +19,18 @@ function navigateTo(pageId) {
 }
 
 function updateNavigationButtons() {
-    // Skip if on the Home page (no prev/next buttons)
     if (currentPage === 'home') return;
 
     const currentIndex = pageOrder.indexOf(currentPage);
     const prevButton = document.querySelector(`#${currentPage} .prev-button`);
     const nextButton = document.querySelector(`#${currentPage} .next-button`);
 
-    // Previous button (circular navigation)
     const prevIndex = (currentIndex === 0) ? pageOrder.length - 1 : currentIndex - 1;
     const prevPage = pageOrder[prevIndex];
     prevButton.style.display = 'inline-block';
     prevButton.textContent = `< ${pageTitles[prevPage]}`;
     prevButton.onclick = () => navigateTo(prevPage);
 
-    // Next button (circular navigation)
     const nextIndex = (currentIndex === pageOrder.length - 1) ? 0 : currentIndex + 1;
     const nextPage = pageOrder[nextIndex];
     nextButton.style.display = 'inline-block';
@@ -44,12 +41,14 @@ function updateNavigationButtons() {
 // Swipe Detection
 let touchstartX = 0;
 let touchendX = 0;
+let touchstartTime = 0;
 let isSingleTouch = false;
 
 document.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
         isSingleTouch = true;
         touchstartX = e.changedTouches[0].screenX;
+        touchstartTime = Date.now(); // Record the start time
     } else {
         isSingleTouch = false;
     }
@@ -59,6 +58,12 @@ document.addEventListener('touchend', e => {
     if (!isSingleTouch) return;
 
     touchendX = e.changedTouches[0].screenX;
+    const touchendTime = Date.now();
+    const touchDuration = touchendTime - touchstartTime;
+
+    // Require a minimum duration for a swipe (e.g., 100ms)
+    if (touchDuration < 100) return;
+
     handleSwipe();
 });
 
@@ -67,12 +72,10 @@ function handleSwipe() {
     const currentIndex = pageOrder.indexOf(currentPage);
     
     if (touchendX < touchstartX - swipeThreshold) {
-        // Swipe left: go to next page (circular)
         const nextIndex = (currentIndex === pageOrder.length - 1) ? 0 : currentIndex + 1;
         navigateTo(pageOrder[nextIndex]);
     }
     if (touchendX > touchstartX + swipeThreshold) {
-        // Swipe right: go to previous page (circular)
         const prevIndex = (currentIndex === 0) ? pageOrder.length - 1 : currentIndex - 1;
         navigateTo(pageOrder[prevIndex]);
     }
@@ -83,7 +86,6 @@ document.addEventListener('keydown', e => {
     const currentIndex = pageOrder.indexOf(currentPage);
     const currentPageElement = document.getElementById(currentPage);
     
-    // Left/Right for page navigation (circular)
     if (e.key === 'ArrowRight') {
         const nextIndex = (currentIndex === pageOrder.length - 1) ? 0 : currentIndex + 1;
         navigateTo(pageOrder[nextIndex]);
@@ -93,7 +95,6 @@ document.addEventListener('keydown', e => {
         navigateTo(pageOrder[prevIndex]);
     }
 
-    // Up/Down for scrolling
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         console.log(`Key pressed: ${e.key}`);
         e.preventDefault();
