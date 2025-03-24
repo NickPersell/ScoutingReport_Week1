@@ -40,8 +40,7 @@ function updateNavigationButtons() {
         nextButton.textContent = `${pageTitles[nextPage]} >`;
         nextButton.onclick = () => navigateTo(nextPage);
     } else {
-        // On the last page (Special Teams), loop back to Home
-        const nextPage = pageOrder[0]; // Home page
+        const nextPage = pageOrder[0];
         nextButton.style.display = 'inline-block';
         nextButton.textContent = `Home >`;
         nextButton.onclick = () => navigateTo(nextPage);
@@ -51,12 +50,21 @@ function updateNavigationButtons() {
 // Swipe Detection
 let touchstartX = 0;
 let touchendX = 0;
+let isSingleTouch = false;
 
 document.addEventListener('touchstart', e => {
-    touchstartX = e.changedTouches[0].screenX;
+    // Check the number of touches
+    if (e.touches.length === 1) {
+        isSingleTouch = true;
+        touchstartX = e.changedTouches[0].screenX;
+    } else {
+        isSingleTouch = false; // Ignore multi-touch gestures (e.g., pinch-to-zoom)
+    }
 });
 
 document.addEventListener('touchend', e => {
+    if (!isSingleTouch) return; // Ignore if it wasn't a single-touch gesture
+
     touchendX = e.changedTouches[0].screenX;
     handleSwipe();
 });
@@ -70,7 +78,7 @@ function handleSwipe() {
         if (currentIndex < pageOrder.length - 1) {
             navigateTo(pageOrder[currentIndex + 1]);
         } else {
-            navigateTo(pageOrder[0]); // Loop to Home
+            navigateTo(pageOrder[0]);
         }
     }
     if (touchendX > touchstartX + swipeThreshold && currentIndex > 0) {
@@ -88,7 +96,7 @@ document.addEventListener('keydown', e => {
         if (currentIndex < pageOrder.length - 1) {
             navigateTo(pageOrder[currentIndex + 1]);
         } else {
-            navigateTo(pageOrder[0]); // Loop to Home
+            navigateTo(pageOrder[0]);
         }
     }
     if (e.key === 'ArrowLeft' && currentIndex > 0) {
