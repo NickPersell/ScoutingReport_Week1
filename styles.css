@@ -7,7 +7,8 @@ body {
 }
 
 .page {
-    width: 100%;
+    width: 100vw; /* Full viewport width */
+    min-width: 100vw; /* Prevent shrinking below viewport width */
     height: 100%;
     position: absolute;
     top: 0;
@@ -84,40 +85,43 @@ h2 {
     flex-direction: column;
     align-items: center;
     scroll-behavior: smooth;
-    padding: 0; /* Remove padding to make images full-width */
+    padding: 0;
 }
 
 .content-wrapper, .main-image-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw; /* Full viewport width */
+    width: 100vw;
+    min-width: 100vw; /* Prevent shrinking below viewport width */
 }
 
 .main-image, .content-image {
-    width: 100vw; /* Full viewport width */
+    width: 100vw;
+    min-width: 100vw; /* Prevent shrinking below viewport width */
     height: auto;
     display: block;
-    margin: 0; /* Remove any margins */
+    margin: 0;
 }
 
 /* Mobile optimization */
 @media (max-width: 480px) {
     .page {
-        width: 100%;
-        padding: 10px; /* Reduce padding on mobile, but not for images */
+        width: 100vw;
+        min-width: 100vw;
+        padding: 10px;
     }
 
     .nav-buttons {
-        flex-direction: row; /* Keep buttons side by side */
+        flex-direction: row;
         gap: 10px;
-        flex-wrap: wrap; /* Allow wrapping if buttons don't fit */
+        flex-wrap: wrap;
         justify-content: center;
     }
 
     .nav-buttons button {
-        font-size: 14px; /* Slightly smaller font on mobile */
-        padding: 8px 12px; /* Adjust padding for smaller screens */
+        font-size: 14px;
+        padding: 8px 12px;
     }
 
     .prev-button, .next-button {
@@ -132,14 +136,16 @@ h2 {
     }
 
     .content, .main-image-container {
-        padding: 0; /* Ensure no padding on mobile */
+        padding: 0;
     }
 
     .content-wrapper, .main-image-wrapper {
-        width: 100vw; /* Full viewport width on mobile */
+        width: 100vw;
+        min-width: 100vw;
     }
 
     .main-image, .content-image {
-        width: 100vw; /* Full viewport width on mobile */
+        width: 100vw;
+        min-width: 100vw;
     }
 }
