@@ -48,7 +48,7 @@ document.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
         isSingleTouch = true;
         touchstartX = e.changedTouches[0].screenX;
-        touchstartTime = Date.now(); // Record the start time
+        touchstartTime = Date.now();
     } else {
         isSingleTouch = false;
     }
@@ -61,13 +61,24 @@ document.addEventListener('touchend', e => {
     const touchendTime = Date.now();
     const touchDuration = touchendTime - touchstartTime;
 
-    // Require a minimum duration for a swipe (e.g., 100ms)
     if (touchDuration < 100) return;
 
     handleSwipe();
 });
 
 function handleSwipe() {
+    // Check the zoom level
+    let zoomLevel = 1.0;
+    if (window.visualViewport) {
+        zoomLevel = window.visualViewport.scale;
+    } else {
+        // Fallback for browsers that don't support visualViewport
+        zoomLevel = window.innerWidth / document.documentElement.clientWidth;
+    }
+
+    // Only navigate if the zoom level is 1.0 (full screen)
+    if (Math.abs(zoomLevel - 1.0) > 0.01) return; // Allow a small tolerance for floating-point comparison
+
     const swipeThreshold = 50;
     const currentIndex = pageOrder.indexOf(currentPage);
     
