@@ -57,22 +57,22 @@ h2 {
 /* Header for content pages */
 .header {
     display: flex;
-    justify-content: space-between; /* Space buttons and title */
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    width: 100%; /* Ensure full width for alignment */
+    width: 100%;
 }
 
 .prev-button, .next-button {
-    background: #ff0000; /* Red background */
-    color: white; /* White text */
-    font-weight: bold; /* Bold text */
-    padding: 5px 10px; /* Smaller padding to fit text */
+    background: #ff0000;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: auto; /* Only as wide as the text */
+    width: auto;
     display: inline-block;
 }
 
@@ -84,46 +84,62 @@ h2 {
     flex-direction: column;
     align-items: center;
     scroll-behavior: smooth;
+    padding: 0; /* Remove padding to make images full-width */
 }
 
 .content-wrapper, .main-image-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 100vw; /* Full viewport width */
 }
 
 .main-image, .content-image {
-    width: 100%;
+    width: 100vw; /* Full viewport width */
     height: auto;
     display: block;
+    margin: 0; /* Remove any margins */
 }
 
 /* Mobile optimization */
 @media (max-width: 480px) {
     .page {
         width: 100%;
+        padding: 10px; /* Reduce padding on mobile, but not for images */
     }
 
     .nav-buttons {
-        flex-direction: column;
+        flex-direction: row; /* Keep buttons side by side */
         gap: 10px;
+        flex-wrap: wrap; /* Allow wrapping if buttons don't fit */
+        justify-content: center;
     }
 
     .nav-buttons button {
-        width: 100%;
-        max-width: 200px;
-        margin: 0 auto;
+        font-size: 14px; /* Slightly smaller font on mobile */
+        padding: 8px 12px; /* Adjust padding for smaller screens */
     }
 
     .prev-button, .next-button {
         padding: 5px 10px;
-        font-size: 14px; /* Slightly smaller on mobile */
+        font-size: 14px;
     }
 
     .header {
-        flex-wrap: wrap; /* Allow wrapping if needed on small screens */
+        flex-wrap: wrap;
         justify-content: center;
         gap: 10px;
+    }
+
+    .content, .main-image-container {
+        padding: 0; /* Ensure no padding on mobile */
+    }
+
+    .content-wrapper, .main-image-wrapper {
+        width: 100vw; /* Full viewport width on mobile */
+    }
+
+    .main-image, .content-image {
+        width: 100vw; /* Full viewport width on mobile */
     }
 }
