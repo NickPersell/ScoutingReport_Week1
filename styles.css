@@ -11,8 +11,7 @@ body {
     width: 100vw;
     min-width: 100vw;
     height: 100%;
-    display: none; /* Hide by default */
-    padding: 20px;
+    display: none;
     box-sizing: border-box;
     background: #fff;
     flex-direction: column;
@@ -20,24 +19,45 @@ body {
 }
 
 .page.active {
-    display: flex; /* Show only the active page */
+    display: flex;
 }
 
 h1, h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 0;
+    padding: 10px 0;
 }
 
-h2 {
-    margin: 0;
+/* Fixed positioning for headers to keep them unzoomed */
+.page#home h1, .nav-buttons, .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+/* Adjust positioning for nav-buttons and header */
+.page#home h1 {
+    padding: 10px;
 }
 
 .nav-buttons {
+    top: 50px; /* Adjust based on h1 height */
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 15px;
-    margin: 0 auto 20px;
+    padding: 10px 0;
+}
+
+.header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav-buttons button {
@@ -53,15 +73,6 @@ h2 {
     display: inline-block;
 }
 
-/* Header for content pages */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
 .prev-button, .next-button {
     background: #ff0000;
     color: white;
@@ -75,10 +86,16 @@ h2 {
     display: inline-block;
 }
 
+/* Zoom container for images */
+.zoom-container {
+    margin-top: 120px; /* Adjust based on header/nav-buttons height */
+    width: 100vw;
+    flex: 1;
+    overflow: auto; /* Allow panning when zoomed */
+}
+
 .content, .main-image-container {
     width: 100%;
-    flex: 1;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,14 +124,19 @@ h2 {
     .page {
         width: 100vw;
         min-width: 100vw;
-        padding: 10px;
+    }
+
+    .page#home h1 {
+        padding: 5px;
+        font-size: 1.5em;
     }
 
     .nav-buttons {
-        flex-direction: row;
+        top: 40px; /* Adjust for smaller h1 */
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
+        padding: 5px 0;
     }
 
     .nav-buttons button {
@@ -122,15 +144,17 @@ h2 {
         padding: 8px 12px;
     }
 
+    .header {
+        padding: 5px;
+    }
+
     .prev-button, .next-button {
         padding: 5px 10px;
         font-size: 14px;
     }
 
-    .header {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
+    .zoom-container {
+        margin-top: 100px; /* Adjust for smaller header/nav-buttons */
     }
 
     .content, .main-image-container {
