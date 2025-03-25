@@ -156,6 +156,37 @@ function loadImages(container, prefix) {
     tryLoadNextImage();
 }
 
+// Counteract Zoom on the Banner
+function adjustBannerScale() {
+    const banner = document.querySelector(`#${currentPage} .banner-wrapper`);
+    if (!banner) return;
+
+    let zoomLevel = 1.0;
+    if (window.visualViewport) {
+        zoomLevel = window.visualViewport.scale;
+    } else {
+        zoomLevel = window.innerWidth / document.documentElement.clientWidth;
+    }
+
+    // Counteract the zoom by scaling the banner inversely
+    const inverseScale = 1 / zoomLevel;
+    banner.style.transform = `scale(${inverseScale})`;
+    banner.style.transformOrigin = 'top left';
+
+    // Adjust the banner's position to account for the zoom offset
+    const offsetY = (zoomLevel - 1) * (banner.offsetHeight / zoomLevel);
+    banner.style.top = `${-offsetY}px`;
+}
+
+// Listen for zoom changes
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', adjustBannerScale);
+    window.visualViewport.addEventListener('scroll', adjustBannerScale);
+}
+
+// Initial adjustment
+window.addEventListener('load', adjustBannerScale);
+
 // Load images and set initial navigation buttons on page load
 window.onload = () => {
     loadImages(document.querySelector('#home .main-image-wrapper'), 'main');
@@ -163,4 +194,5 @@ window.onload = () => {
     loadImages(document.querySelector('#defense .content-wrapper'), 'defense');
     loadImages(document.querySelector('#special-teams .content-wrapper'), 'special-teams');
     updateNavigationButtons();
+    adjustBannerScale();
 };
