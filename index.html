@@ -7,16 +7,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Fixed Banner (outside of pages) -->
+    <div class="fixed-banner">
+        <div class="banner-content" id="banner-content">
+            <!-- Banner content will be updated dynamically -->
+        </div>
+    </div>
+
     <!-- Home Page -->
     <div class="page active" id="home">
-        <div class="banner-wrapper">
-            <h1>Scouting Report</h1>
-            <div class="nav-buttons">
-                <button onclick="navigateTo('offense')">Offense</button>
-                <button onclick="navigateTo('defense')">Defense</button>
-                <button onclick="navigateTo('special-teams')">Special Teams</button>
-            </div>
-        </div>
         <div class="zoom-container">
             <div class="main-image-container">
                 <div class="main-image-wrapper">
@@ -28,13 +27,6 @@
 
     <!-- Content Pages -->
     <div class="page" id="offense">
-        <div class="banner-wrapper">
-            <div class="header">
-                <button class="prev-button"></button>
-                <h2>Offense</h2>
-                <button class="next-button"></button>
-            </div>
-        </div>
         <div class="zoom-container">
             <div class="content">
                 <div class="content-wrapper">
@@ -45,13 +37,6 @@
     </div>
 
     <div class="page" id="defense">
-        <div class="banner-wrapper">
-            <div class="header">
-                <button class="prev-button"></button>
-                <h2>Defense</h2>
-                <button class="next-button"></button>
-            </div>
-        </div>
         <div class="zoom-container">
             <div class="content">
                 <div class="content-wrapper">
@@ -62,13 +47,6 @@
     </div>
 
     <div class="page" id="special-teams">
-        <div class="banner-wrapper">
-            <div class="header">
-                <button class="prev-button"></button>
-                <h2>Special Teams</h2>
-                <button class="next-button"></button>
-            </div>
-        </div>
         <div class="zoom-container">
             <div class="content">
                 <div class="content-wrapper">
