@@ -35,7 +35,7 @@ h1, h2 {
     left: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.9);
-    z-index: 10;
+    z-index: 100; /* Increased z-index to ensure it stays on top */
     box-sizing: border-box;
 }
 
@@ -45,7 +45,7 @@ h1, h2 {
 }
 
 .nav-buttons {
-    top: 50px; /* Adjust based on h1 height */
+    top: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -100,19 +100,20 @@ h1, h2 {
     position: absolute;
     left: 0;
     width: 100vw;
-    height: calc(100vh - 60px); /* Default height for non-Home pages */
+    height: calc(100vh - 60px);
     overflow: auto;
+    z-index: 1; /* Ensure zoom-container is below the banner */
 }
 
 /* Adjust top position for Home page */
 .page#home .zoom-container {
-    top: 110px; /* h1 (50px) + nav-buttons (60px) */
-    height: calc(100vh - 110px); /* Adjust height to fit below the banner */
+    top: 110px;
+    height: calc(100vh - 110px);
 }
 
 /* Adjust top position for other pages */
 .page:not(#home) .zoom-container {
-    top: 60px; /* header height */
+    top: 60px;
     height: calc(100vh - 60px);
 }
 
@@ -178,11 +179,11 @@ h1, h2 {
 
     /* Adjust banner heights for mobile */
     .page#home .banner-height {
-        height: 90px; /* h1 (40px) + nav-buttons (50px) */
+        height: 90px;
     }
 
     .page:not(#home) .banner-height {
-        height: 50px; /* header height */
+        height: 50px;
     }
 
     .page#home .zoom-container {
