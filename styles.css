@@ -28,13 +28,13 @@ h1, h2 {
     padding: 10px 0;
 }
 
-/* Fixed positioning for headers to keep them unzoomed */
+/* Fixed positioning for headers to overlay the image */
 .page#home h1, .nav-buttons, .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent background for readability */
     z-index: 10;
     box-sizing: border-box;
 }
@@ -88,9 +88,11 @@ h1, h2 {
 
 /* Zoom container for images */
 .zoom-container {
-    margin-top: 120px; /* Adjust based on header/nav-buttons height */
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100vw;
-    flex: 1;
+    height: 100vh; /* Full height of the viewport */
     overflow: auto; /* Allow panning when zoomed */
 }
 
@@ -109,6 +111,7 @@ h1, h2 {
     align-items: center;
     width: 100vw;
     min-width: 100vw;
+    padding-bottom: 60px; /* Add padding to prevent cutoff at the bottom */
 }
 
 .main-image, .content-image {
@@ -154,7 +157,7 @@ h1, h2 {
     }
 
     .zoom-container {
-        margin-top: 100px; /* Adjust for smaller header/nav-buttons */
+        /* No margin-top needed since it starts at the top */
     }
 
     .content, .main-image-container {
@@ -164,10 +167,24 @@ h1, h2 {
     .content-wrapper, .main-image-wrapper {
         width: 100vw;
         min-width: 100vw;
+        padding-bottom: 80px; /* Extra padding on mobile to account for browser toolbar */
     }
 
     .main-image, .content-image {
         width: 100vw;
         min-width: 100vw;
+    }
+}
+
+/* Ensure safe area insets are respected on iPhone */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .content-wrapper, .main-image-wrapper {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom)); /* Add safe area inset to padding */
+    }
+
+    @media (max-width: 480px) {
+        .content-wrapper, .main-image-wrapper {
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
     }
 }
