@@ -34,7 +34,7 @@ h1, h2 {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.9); /* Semi-transparent background for readability */
+    background: rgba(255, 255, 255, 0.9);
     z-index: 10;
     box-sizing: border-box;
 }
@@ -58,6 +58,15 @@ h1, h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* Heights of the banners for reference */
+.page#home .banner-height {
+    height: 110px; /* h1 (50px) + nav-buttons (60px) */
+}
+
+.page:not(#home) .banner-height {
+    height: 60px; /* header height */
 }
 
 .nav-buttons button {
@@ -89,11 +98,22 @@ h1, h2 {
 /* Zoom container for images */
 .zoom-container {
     position: absolute;
-    top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh; /* Full height of the viewport */
-    overflow: auto; /* Allow panning when zoomed */
+    height: calc(100vh - 60px); /* Default height for non-Home pages */
+    overflow: auto;
+}
+
+/* Adjust top position for Home page */
+.page#home .zoom-container {
+    top: 110px; /* h1 (50px) + nav-buttons (60px) */
+    height: calc(100vh - 110px); /* Adjust height to fit below the banner */
+}
+
+/* Adjust top position for other pages */
+.page:not(#home) .zoom-container {
+    top: 60px; /* header height */
+    height: calc(100vh - 60px);
 }
 
 .content, .main-image-container {
@@ -111,7 +131,7 @@ h1, h2 {
     align-items: center;
     width: 100vw;
     min-width: 100vw;
-    padding-bottom: 60px; /* Add padding to prevent cutoff at the bottom */
+    padding-bottom: 60px;
 }
 
 .main-image, .content-image {
@@ -135,7 +155,7 @@ h1, h2 {
     }
 
     .nav-buttons {
-        top: 40px; /* Adjust for smaller h1 */
+        top: 40px;
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
@@ -156,8 +176,23 @@ h1, h2 {
         font-size: 14px;
     }
 
-    .zoom-container {
-        /* No margin-top needed since it starts at the top */
+    /* Adjust banner heights for mobile */
+    .page#home .banner-height {
+        height: 90px; /* h1 (40px) + nav-buttons (50px) */
+    }
+
+    .page:not(#home) .banner-height {
+        height: 50px; /* header height */
+    }
+
+    .page#home .zoom-container {
+        top: 90px;
+        height: calc(100vh - 90px);
+    }
+
+    .page:not(#home) .zoom-container {
+        top: 50px;
+        height: calc(100vh - 50px);
     }
 
     .content, .main-image-container {
@@ -167,7 +202,7 @@ h1, h2 {
     .content-wrapper, .main-image-wrapper {
         width: 100vw;
         min-width: 100vw;
-        padding-bottom: 80px; /* Extra padding on mobile to account for browser toolbar */
+        padding-bottom: 80px;
     }
 
     .main-image, .content-image {
@@ -179,7 +214,7 @@ h1, h2 {
 /* Ensure safe area insets are respected on iPhone */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
     .content-wrapper, .main-image-wrapper {
-        padding-bottom: calc(60px + env(safe-area-inset-bottom)); /* Add safe area inset to padding */
+        padding-bottom: calc(60px + env(safe-area-inset-bottom));
     }
 
     @media (max-width: 480px) {
