@@ -16,15 +16,14 @@ function navigateTo(pageId) {
     document.getElementById(pageId).classList.add('active');
     currentPage = pageId;
     updateNavigationButtons();
-    updateBannerContent();
 }
 
 function updateNavigationButtons() {
     if (currentPage === 'home') return;
 
     const currentIndex = pageOrder.indexOf(currentPage);
-    const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
+    const prevButton = document.querySelector(`#${currentPage} .prev-button`);
+    const nextButton = document.querySelector(`#${currentPage} .next-button`);
 
     const prevIndex = (currentIndex === 0) ? pageOrder.length - 1 : currentIndex - 1;
     const prevPage = pageOrder[prevIndex];
@@ -37,29 +36,6 @@ function updateNavigationButtons() {
     nextButton.style.display = 'inline-block';
     nextButton.textContent = `${pageTitles[nextPage]} >`;
     nextButton.onclick = () => navigateTo(nextPage);
-}
-
-function updateBannerContent() {
-    const bannerContent = document.getElementById('banner-content');
-    if (currentPage === 'home') {
-        bannerContent.innerHTML = `
-            <h1>Scouting Report</h1>
-            <div class="nav-buttons">
-                <button onclick="navigateTo('offense')">Offense</button>
-                <button onclick="navigateTo('defense')">Defense</button>
-                <button onclick="navigateTo('special-teams')">Special Teams</button>
-            </div>
-        `;
-    } else {
-        bannerContent.innerHTML = `
-            <div class="header">
-                <button class="prev-button"></button>
-                <h2>${pageTitles[currentPage]}</h2>
-                <button class="next-button"></button>
-            </div>
-        `;
-        updateNavigationButtons();
-    }
 }
 
 // Swipe Detection
@@ -153,6 +129,37 @@ document.addEventListener('keydown', e => {
     }
 });
 
+// Counteract Zoom on the Banner
+function adjustBannerScale() {
+    const banner = document.querySelector(`#${currentPage} .banner-wrapper`);
+    if (!banner) return;
+
+    let zoomLevel = 1.0;
+    if (window.visualViewport) {
+        zoomLevel = window.visualViewport.scale;
+    } else {
+        zoomLevel = window.innerWidth / document.documentElement.clientWidth;
+    }
+
+    // Counteract the zoom by scaling the banner inversely
+    const inverseScale = 1 / zoomLevel;
+    banner.style.transform = `scale(${inverseScale})`;
+    banner.style.transformOrigin = 'top left';
+
+    // Adjust the banner's position to account for the zoom offset
+    const offsetY = (zoomLevel - 1) * (banner.offsetHeight / zoomLevel);
+    banner.style.top = `${-offsetY}px`;
+}
+
+// Listen for zoom changes
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', adjustBannerScale);
+    window.visualViewport.addEventListener('scroll', adjustBannerScale);
+}
+
+// Initial adjustment
+window.addEventListener('load', adjustBannerScale);
+
 // Load Images Dynamically
 function loadImages(container, prefix) {
     let pageNum = 1;
@@ -186,5 +193,6 @@ window.onload = () => {
     loadImages(document.querySelector('#offense .content-wrapper'), 'offense');
     loadImages(document.querySelector('#defense .content-wrapper'), 'defense');
     loadImages(document.querySelector('#special-teams .content-wrapper'), 'special-teams');
-    updateBannerContent();
+    updateNavigationButtons();
+    adjustBannerScale();
 };
