@@ -7,18 +7,19 @@ body {
     position: relative;
 }
 
-.fixed-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 100;
+.page {
+    width: 100vw;
+    min-width: 100vw;
+    height: 100%;
+    display: none;
     box-sizing: border-box;
+    background: #fff;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.banner-content {
-    width: 100%;
+.page.active {
+    display: flex;
 }
 
 h1, h2 {
@@ -27,7 +28,23 @@ h1, h2 {
     padding: 10px 0;
 }
 
-.nav-buttons {
+/* Banner wrapper for dynamic scaling */
+.banner-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.9);
+    box-sizing: border-box;
+}
+
+/* Adjust positioning for nav-buttons and header */
+.page#home .banner-wrapper h1 {
+    padding: 10px;
+}
+
+.page#home .banner-wrapper .nav-buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -35,11 +52,20 @@ h1, h2 {
     padding: 10px 0;
 }
 
-.header {
+.page:not(#home) .banner-wrapper .header {
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* Heights of the banners for reference */
+.page#home .banner-height {
+    height: 110px; /* h1 (50px) + nav-buttons (60px) */
+}
+
+.page:not(#home) .banner-height {
+    height: 60px; /* header height */
 }
 
 .nav-buttons button {
@@ -66,21 +92,6 @@ h1, h2 {
     cursor: pointer;
     width: auto;
     display: inline-block;
-}
-
-.page {
-    width: 100vw;
-    min-width: 100vw;
-    height: 100%;
-    display: none;
-    box-sizing: border-box;
-    background: #fff;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.page.active {
-    display: flex;
 }
 
 /* Zoom container for images */
@@ -138,12 +149,12 @@ h1, h2 {
         min-width: 100vw;
     }
 
-    h1 {
+    .page#home .banner-wrapper h1 {
         padding: 5px;
         font-size: 1.5em;
     }
 
-    .nav-buttons {
+    .page#home .banner-wrapper .nav-buttons {
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
@@ -155,7 +166,7 @@ h1, h2 {
         padding: 8px 12px;
     }
 
-    .header {
+    .page:not(#home) .banner-wrapper .header {
         padding: 5px;
     }
 
@@ -165,6 +176,14 @@ h1, h2 {
     }
 
     /* Adjust banner heights for mobile */
+    .page#home .banner-height {
+        height: 90px;
+    }
+
+    .page:not(#home) .banner-height {
+        height: 50px;
+    }
+
     .page#home .zoom-container {
         top: 90px;
         height: calc(100vh - 90px);
