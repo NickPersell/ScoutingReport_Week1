@@ -28,24 +28,23 @@ h1, h2 {
     padding: 10px 0;
 }
 
-/* Fixed positioning for headers to overlay the image */
-.page#home h1, .nav-buttons, .header {
+/* Banner wrapper for dynamic scaling */
+.banner-wrapper {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 100;
     background: rgba(255, 255, 255, 0.9);
-    z-index: 100; /* Increased z-index to ensure it stays on top */
     box-sizing: border-box;
 }
 
 /* Adjust positioning for nav-buttons and header */
-.page#home h1 {
+.page#home .banner-wrapper h1 {
     padding: 10px;
 }
 
-.nav-buttons {
-    top: 50px;
+.page#home .banner-wrapper .nav-buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -53,7 +52,7 @@ h1, h2 {
     padding: 10px 0;
 }
 
-.header {
+.page:not(#home) .banner-wrapper .header {
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -102,7 +101,7 @@ h1, h2 {
     width: 100vw;
     height: calc(100vh - 60px);
     overflow: auto;
-    z-index: 1; /* Ensure zoom-container is below the banner */
+    z-index: 1;
 }
 
 /* Adjust top position for Home page */
@@ -150,13 +149,12 @@ h1, h2 {
         min-width: 100vw;
     }
 
-    .page#home h1 {
+    .page#home .banner-wrapper h1 {
         padding: 5px;
         font-size: 1.5em;
     }
 
-    .nav-buttons {
-        top: 40px;
+    .page#home .banner-wrapper .nav-buttons {
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
@@ -168,7 +166,7 @@ h1, h2 {
         padding: 8px 12px;
     }
 
-    .header {
+    .page:not(#home) .banner-wrapper .header {
         padding: 5px;
     }
 
