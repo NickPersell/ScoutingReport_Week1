@@ -3,28 +3,24 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
-    overflow: hidden; /* Prevent overflow when zoomed */
-    position: relative; /* Ensure body is the positioning context */
+    overflow: hidden;
+    position: relative;
 }
 
 .page {
     width: 100vw;
     min-width: 100vw;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 100%;
-    transition: left 0.3s ease;
+    display: none; /* Hide by default */
     padding: 20px;
     box-sizing: border-box;
     background: #fff;
-    display: flex;
     flex-direction: column;
-    overflow: hidden; /* Clip content to the page */
+    overflow: hidden;
 }
 
 .page.active {
-    left: 0;
+    display: flex; /* Show only the active page */
 }
 
 h1, h2 {
