@@ -63,22 +63,19 @@ document.addEventListener('touchend', e => {
 
     if (touchDuration < 100) return;
 
-    handleSwipe();
-});
-
-function handleSwipe() {
-    // Check the zoom level
     let zoomLevel = 1.0;
     if (window.visualViewport) {
         zoomLevel = window.visualViewport.scale;
     } else {
-        // Fallback for browsers that don't support visualViewport
         zoomLevel = window.innerWidth / document.documentElement.clientWidth;
     }
 
-    // Only navigate if the zoom level is 1.0 (full screen)
-    if (Math.abs(zoomLevel - 1.0) > 0.01) return; // Allow a small tolerance for floating-point comparison
+    if (Math.abs(zoomLevel - 1.0) > 0.01) return;
 
+    handleSwipe();
+});
+
+function handleSwipe() {
     const swipeThreshold = 50;
     const currentIndex = pageOrder.indexOf(currentPage);
     
